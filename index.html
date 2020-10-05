@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PEPSUS</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <table class="table table-condensed table-bordered table-hover">
+        <thead>
+          <tr>
+            <td>Nome do aluno</td>
+            <td>Nome do orientador</td>
+            <td>Título do TCC</td>
+            <td>Data</td>
+            <td>Horário da apresentação</td>
+            <td>Sala</td>
+            <td>Link</td>
+          </tr>
+        </thead>
+        <tbody id="tdata"></tbody>
+      </table>
+      <p id="msg"></p>
+      <div class="loader"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+      var $loading = $(".loader").hide();
+      $(document)
+        .ajaxStart(function () {
+          $loading.show();
+        })
+        .ajaxStop(function () {
+          $loading.hide();
+        });
+
+      (function () {
+        $.get(
+          "https://script.google.com/macros/s/AKfycbwo5mCSw8c-Mmzhw2sGI7u6vpaDAPMr8ClgAxBa80_oX1_IaIc/exec",
+          function (data) {
+            if (typeof $("#tdata").data("data") !== "undefined") {
+              for (var i = 0; i < data.user.length; i++) {
+                var html = "<tr>";
+                html += "<td>" + data.user[i].nome + "</td>";
+                html += "<td>" + data.user[i].orientador + "</td>";
+                html += "<td>" + data.user[i].titulo + "</td>";
+                html += "<td>" + data.user[i].data + "</td>";
+                html += "<td>" + data.user[i].horario + "</td>";
+                html += "<td>" + data.user[i].sala + "</td>";
+                html += "<td>" + data.user[i].link + "</td>";
+                html += "</tr>";
+                $("table tbody").append(html);
+              }
+            } else {
+              $("p#msg").text("Não há dados cadastrados");
+            }
+          }
+        );
+      })();
+    </script>
+  </body>
+</html>
