@@ -48,21 +48,26 @@
         $.get(
           "https://script.google.com/macros/s/AKfycbwo5mCSw8c-Mmzhw2sGI7u6vpaDAPMr8ClgAxBa80_oX1_IaIc/exec",
           function (data) {
-            if (typeof $("#tdata").data("data") !== "undefined") {
+            console.log(data);
+            
               for (var i = 0; i < data.user.length; i++) {
-                var html = "<tr>";
-                html += "<td>" + data.user[i].nome + "</td>";
-                html += "<td>" + data.user[i].orientador + "</td>";
-                html += "<td>" + data.user[i].titulo + "</td>";
-                html += "<td>" + data.user[i].data + "</td>";
-                html += "<td>" + data.user[i].horario + "</td>";
-                html += "<td>" + data.user[i].sala + "</td>";
-                html += "<td>" + data.user[i].link + "</td>";
-                html += "</tr>";
-                $("table tbody").append(html);
-              }
-            } else {
-              $("p#msg").text("Não há dados cadastrados");
+                if (data.user[i].nome == "") {
+                  $("p#msg").text("Não há dados cadastrados");
+                  break;
+                }
+                if (data.user[i].nome !== "") {
+                  var html = "<tr>";
+                  html += "<td>" + data.user[i].nome + "</td>";
+                  html += "<td>" + data.user[i].orientador + "</td>";
+                  html += "<td>" + data.user[i].titulo + "</td>";
+                  html += "<td>" + data.user[i].data + "</td>";
+                  html += "<td>" + data.user[i].horario + "</td>";
+                  html += "<td>" + data.user[i].sala + "</td>";
+                  html += "<td>" + data.user[i].link + "</td>";
+                  html += "</tr>";
+                  $("table tbody").append(html);
+                }
+              
             }
           }
         );
